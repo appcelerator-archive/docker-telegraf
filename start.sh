@@ -5,12 +5,8 @@
 echo ---------------------------------------------------------------------------
 echo "Configured outputs:"
 echo "CONSUL: "$CONSUL
-echo "InfluxDB:     $OUTPUT_INFLUXDB_ENABLED"
-echo "Cloudwatch:   $OUTPUT_CLOUDWATCH_ENABLED"
-echo "Kafka:        $OUTPUT_KAFKA_ENABLED"
 if [ -z "$CONSUL" ]; then
-  envtpl /etc/telegraf/telegraf.conf.tpl
-  exec /bin/telegraf -config /etc/telegraf/telegraf.conf
+  exec /run.sh
 else
   #update containerpilot conffile
   sed -i "s/\[consul\]/$CONSUL/g" /etc/containerpilot.json
@@ -26,7 +22,7 @@ else
       ready=1
       for service in $DEPENDENCIES
       do
-        status=$(curl --max-time 3 -s http://consul:8500/v1/health/checks/$service)
+        status=$(curl --max-time 3 -s http://$CONSUL/v1/health/checks/$service)
         if [[ $status =~ ^.*\"Status\":\"passing\" ]]; then
           echo $service" is ready"
         else
@@ -41,7 +37,6 @@ else
     done
     sleep 3
     echo "All dependencies are ready"
-    envtpl /etc/telegraf/telegraf.conf.tpl
-    /bin/containerpilot /bin/telegraf -config /etc/telegraf/telegraf.conf 
+    /bin/containerpilot /run.sh
 done
 fi

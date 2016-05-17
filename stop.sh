@@ -3,7 +3,7 @@
 ready=1
 for service in $DEPENDENCIES
 do
-  status=$(curl --max-time 3 -s http://consul:8500/v1/health/checks/$service)
+  status=$(curl --max-time 3 -s http://$CONSUL/v1/health/checks/$service)
   if [[ $status =~ ^.*\"Status\":\"passing\" ]]; then
     echo $service" is ready"
   else

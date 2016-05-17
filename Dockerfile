@@ -1,9 +1,8 @@
 FROM alpine:3.3
 MAINTAINER Nicolas Degory <ndegory@axway.com>
 
-#need curl and bash available after install for containerPilot
 RUN apk update && \
-    apk --no-cache add python ca-certificates curl bash && \
+    apk --no-cache add python ca-certificates curl && \
     apk --virtual envtpl-deps add --update py-pip python-dev && \
     curl https://bootstrap.pypa.io/ez_setup.py | python && \
     pip install envtpl && \
@@ -28,6 +27,8 @@ RUN echo "http://nl.alpinelinux.org/alpine/edge/main" >> /etc/apk/repositories &
 
 EXPOSE 8125/udp 8092/udp 8094
 
+RUN apk --no-cache add curl bash
+
 ENV INFLUXDB_URL http://localhost:8086
 ENV INTERVAL 10s
 ENV OUTPUT_INFLUXDB_ENABLED     true
@@ -35,21 +36,24 @@ ENV OUTPUT_CLOUDWATCH_ENABLED   false
 ENV OUTPUT_KAFKA_ENABLED        false
 
 COPY telegraf.conf.tpl /etc/telegraf/telegraf.conf.tpl
+COPY run.sh /run.sh
 
 # Add ContainerPilot
-RUN curl -Lo /tmp/cb.tar.gz https://github.com/joyent/containerpilot/releases/download/2.1.0/containerpilot-2.1.0.tar.gz \
+ENV CONTAINERPILOT 2.1.0
+RUN curl -Lo /tmp/cb.tar.gz https://github.com/joyent/containerpilot/releases/download/$CONTAINERPILOT/containerpilot-$CONTAINERPILOT.tar.gz \
 && tar -xz -f /tmp/cb.tar.gz \
 && mv ./containerpilot /bin/
 COPY containerpilot.json /etc/containerpilot.json
 COPY start.sh /start.sh
 COPY stop.sh /stop.sh
-RUN chmod +x /start.sh /stop.sh
+RUN chmod +x /*.sh
 
-ENV CONSUL=consul:8500
+
+#ENV CONSUL=consul:8500
 ENV CONTAINERPILOT=file:///etc/containerpilot.json
 ENV DEPENDENCIES=influxdb
 
-CMD ["sh", "-c", "/start.sh"]
+CMD ["/start.sh"]
 
 LABEL axway_image=telegraf
 # will be updated whenever there's a new commit
