@@ -26,16 +26,29 @@ docker run -t -v /var/run/docker.sock:/var/run/docker.sock:ro -v /var/run/utmp:/
 - COLLECTION_JITTER - Collection jitter by a random amount, defaults to 1s
 - FLUSH_INTERVAL - Default flushing interval for all outputs, defaults to 10s
 - FLUSH_JITTER - Jitter the flush interval by a random amount, defaults to 3s
-- OUTPUT_INFLUXDB_ENABLED - enable InfluxDB Output, defaults to true
+- OUTPUT_INFLUXDB_ENABLED - enable InfluxDB Output, defaults to false
 - OUTPUT_CLOUDWATCH_ENABLED - enable Amazon Cloudwatch Output, defaults to false
-- OUTPUT_KAFKA_ENABLED - enable Kafka Output, defaults to false
+- OUTPUT_KAFKA_ENABLED - enable Kafka Output, defaults to true
+- INPUT_KAFKA_ENABLED - enable Kafka Input, defaults to false
+- INPUT_CPU_ENABLED - enable cpu metrics, defaults to false
+- INPUT_DISK_ENABLED - enable disk metrics, defaults to false
+- INPUT_DISKIO_ENABLED - enable disk I/O metrics, defaults to false
+- INPUT_KERNEL_ENABLED - enable kernel metrics, defaults to false
+- INPUT_MEM_ENABLED - enable mem metrics, defaults to false
+- INPUT_PROCESS_ENABLED - enable process metrics, defaults to false
+- INPUT_SWAP_ENABLED - enable swap metrics, defaults to false
+- INPUT_SYSTEM_ENABLED - enable system metrics, defaults to false
+- INPUT_DOCKER_ENABLED - enable Docker metrics, defaults to true
 - INFLUXDB_URL - Where is your InfluxDB running? (default: http://localhost:8086) Note: No trailing slash!
 - INFLUXDB_USER - InfluxDB username
 - INFLUXDB_PASS - InfluxDB password, defaults to metrics
+- INFLUXDB_TIMEOUT - InfluxDB timetout (in seconds), defaults to 5
 - CLOUDWATCH_REGION - Amazon region, defaults to us-east-1
 - CLOUDWATCH_NAMESPACE - Namespace, defaults to InfluxData/Telegraf
-- KAFKA_BROKER_URL - Kafka broker URL, defaults to localhost:9092
-- KAFKA_TOPIC - Kafka topic, defaults to telegraf
+- OUTPUT_KAFKA_BROKER_URL - Kafka broker URL in output, defaults to localhost:9092
+- OUTPUT_KAFKA_TOPIC - Kafka topic on which to write, defaults to telegraf
+- INTPUT_KAFKA_BROKER_URL - Kafka broker URL in input, defaults to localhost:9092
+- INTPUT_KAFKA_TOPIC - Kafka topic on which to read, defaults to telegraf
 - KAFKA_DATA_FORMAT - Kafka data format, defaults to influx
 - CONSUL - Consul URL for container pilot, example: consul:8500, disabled by default
 

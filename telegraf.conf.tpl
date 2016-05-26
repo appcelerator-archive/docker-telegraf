@@ -84,7 +84,7 @@
 
   ## Write timeout (for the InfluxDB client), formatted as a string.
   ## If not provided, will default to 5s. 0s means no timeout (not recommended).
-  timeout = "5s"
+  timeout = "{{ INFLUXDB_TIMEOUT | default("5") }}s"
   {% if INFLUXDB_USER is defined %}
   username = "{{ INFLUXDB_USER }}"
   password = "{{ INFLUXDB_PASS | default("metrics") }}"
@@ -113,9 +113,9 @@
 {% if OUTPUT_KAFKA_ENABLED == "true" %}
 [[outputs.kafka]]
   ## URLs of kafka brokers
-  brokers = ["{{ KAFKA_BROKER_URL | default("localhost:9092") }}"]
+  brokers = ["{{ OUTPUT_KAFKA_BROKER_URL | default("localhost:9092") }}"]
   ## Kafka topic for producer messages
-  topic = "{{ KAFKA_TOPIC | default("telegraf") }}"
+  topic = "{{ OUTPUT_KAFKA_TOPIC | default("telegraf") }}"
   ## Telegraf tag to use as a routing key
   ##  ie, if this tag exists, it's value will be used as the routing key
   routing_tag = "host"
@@ -166,6 +166,7 @@
 ###############################################################################
 
 # Read metrics about cpu usage
+{% if INPUT_CPU_ENABLED == "true" %}
 [[inputs.cpu]]
   ## Whether to report per-cpu stats or not
   percpu = true
@@ -173,9 +174,12 @@
   totalcpu = true
   ## Comment this line if you want the raw CPU time metrics
   fielddrop = ["time_*"]
-
+{% else %}
+  # CPU input is disabled
+{% endif %}
 
 # Read metrics about disk usage by mount point
+{% if INPUT_DISK_ENABLED == "true" %}
 [[inputs.disk]]
   ## By default, telegraf gather stats for all mountpoints.
   ## Setting mountpoints will restrict the stats to the specified mountpoints.
@@ -184,9 +188,12 @@
   ## Ignore some mountpoints by filesystem type. For example (dev)tmpfs (usually
   ## present on /run, /var/run, /dev/shm or /dev).
   ignore_fs = ["tmpfs", "devtmpfs"]
-
+{% else %}
+  # Disk input is disabled
+{% endif %}
 
 # Read metrics about disk IO by device
+{% if INPUT_DISKIO_ENABLED == "true" %}
 [[inputs.diskio]]
   ## By default, telegraf will gather stats for all devices including
   ## disk partitions.
@@ -194,34 +201,52 @@
   # devices = ["sda", "sdb"]
   ## Uncomment the following line if you do not need disk serial numbers.
   # skip_serial_number = true
-
+{% else %}
+  # Disk IO input is disabled
+{% endif %}
 
 # Get kernel statistics from /proc/stat
+{% if INPUT_KERNEL_ENABLED == "true" %}
 [[inputs.kernel]]
   # no configuration
-
+{% else %}
+  # Kernel input is disabled
+{% endif %}
 
 # Read metrics about memory usage
+{% if INPUT_MEM_ENABLED == "true" %}
 [[inputs.mem]]
   # no configuration
-
+{% else %}
+  # Memory input is disabled
+{% endif %}
 
 # Get the number of processes and group them by status
+{% if INPUT_PROCESS_ENABLED == "true" %}
 [[inputs.processes]]
   # no configuration
-
+{% else %}
+  # Process input is disabled
+{% endif %}
 
 # Read metrics about swap memory usage
+{% if INPUT_SWAP_ENABLED == "true" %}
 [[inputs.swap]]
   # no configuration
-
+{% else %}
+  # Swap input is disabled
+{% endif %}
 
 # Read metrics about system load & uptime
+{% if INPUT_SYSTEM_ENABLED == "true" %}
 [[inputs.system]]
   # no configuration
-
+{% else %}
+  # System input is disabled
+{% endif %}
 
 # Read metrics about docker containers
+{% if INPUT_DCOKER_ENABLED == "true" %}
 [[inputs.docker]]
   ## Docker Endpoint
   ##   To use TCP, set endpoint = "tcp://[ip]:[port]"
@@ -229,7 +254,9 @@
   endpoint = "unix:///var/run/docker.sock"
   ## Only collect metrics for these containers, collect all if empty
   container_names = []
-
+{% else %}
+  # Docker input is disabled
+{% endif %}
 
 # # Read metrics from one or more commands that can output to stdout
 # [[inputs.exec]]
@@ -250,3 +277,26 @@
 # [[inputs.netstat]]
 #   # no configuration
 
+# Read metrics from Kafka topic(s)
+{% if INPUT_KAFKA_ENABLED == "true" %}
+[[inputs.kafka_consumer]]
+  ## topic(s) to consume
+  topics = ["telegraf"]
+  ## an array of Zookeeper connection strings
+  zookeeper_peers = ["zookeeper:2181"]
+  ## the name of the consumer group
+  consumer_group = "telegraf_metrics_consumers"
+  ## Maximum number of metrics to buffer between collection intervals
+  metric_buffer = 100000
+  ## Offset (must be either "oldest" or "newest")
+  offset = "oldest"
+
+  ## Data format to consume.
+
+  ## Each data format has it's own unique set of configuration options, read
+  ## more about them here:
+  ## https://github.com/influxdata/telegraf/blob/master/docs/DATA_FORMATS_INPUT.md
+  data_format = "influx"
+{% else %}
+  # Kafka input is disabled
+{% endif %}
