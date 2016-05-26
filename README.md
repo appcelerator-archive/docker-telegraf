@@ -28,7 +28,7 @@ docker run -t -v /var/run/docker.sock:/var/run/docker.sock:ro -v /var/run/utmp:/
 - FLUSH_JITTER - Jitter the flush interval by a random amount, defaults to 3s
 - OUTPUT_INFLUXDB_ENABLED - enable InfluxDB Output, defaults to true
 - OUTPUT_CLOUDWATCH_ENABLED - enable Amazon Cloudwatch Output, defaults to false
-- OUTPUT_KAFKA_ENABLED - enable Kafka Output, defaults to true
+- OUTPUT_KAFKA_ENABLED - enable Kafka Output, defaults to false
 - INPUT_KAFKA_ENABLED - enable Kafka Input, defaults to false
 - INPUT_CPU_ENABLED - enable cpu metrics, defaults to false
 - INPUT_DISK_ENABLED - enable disk metrics, defaults to false
