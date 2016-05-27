@@ -115,7 +115,7 @@
   ## URLs of kafka brokers
   brokers = ["{{ OUTPUT_KAFKA_BROKER_URL | default("localhost:9092") }}"]
   ## Kafka topic for producer messages
-  topic = "{{ OUTPUT_KAFKA_TOPIC | default("telegraf") }}"
+  topics = ["{{ OUTPUT_KAFKA_TOPIC | default("telegraf") }}"]
   ## Telegraf tag to use as a routing key
   ##  ie, if this tag exists, it's value will be used as the routing key
   routing_tag = "host"
@@ -246,7 +246,7 @@
 {% endif %}
 
 # Read metrics about docker containers
-{% if INPUT_DCOKER_ENABLED == "true" %}
+{% if INPUT_DOCKER_ENABLED == "true" %}
 [[inputs.docker]]
   ## Docker Endpoint
   ##   To use TCP, set endpoint = "tcp://[ip]:[port]"
@@ -281,9 +281,9 @@
 {% if INPUT_KAFKA_ENABLED == "true" %}
 [[inputs.kafka_consumer]]
   ## topic(s) to consume
-  topics = ["telegraf"]
+  topic = "{{ INPUT_KAFKA_TOPIC | default("telegraf") }}"
   ## an array of Zookeeper connection strings
-  zookeeper_peers = ["zookeeper:2181"]
+  zookeeper_peers = ["{{ INPUT_KAFKA_ZOOKEEPER_PEER | default("zookeeper:2181") }}"]
   ## the name of the consumer group
   consumer_group = "telegraf_metrics_consumers"
   ## Maximum number of metrics to buffer between collection intervals
@@ -296,7 +296,7 @@
   ## Each data format has it's own unique set of configuration options, read
   ## more about them here:
   ## https://github.com/influxdata/telegraf/blob/master/docs/DATA_FORMATS_INPUT.md
-  data_format = "influx"
+  data_format = "{{ KAFKA_DATA_FORMAT | default("influx") }}"
 {% else %}
   # Kafka input is disabled
 {% endif %}

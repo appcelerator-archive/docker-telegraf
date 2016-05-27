@@ -35,7 +35,7 @@ ENV INPUT_MEM_ENABLED           false
 ENV INPUT_PROCESS_ENABLED       false
 ENV INPUT_SWAP_ENABLED          false
 ENV INPUT_SYSTEM_ENABLED        false
-ENV INPUT_DCOKER_ENABLED        true
+ENV INPUT_DOCKER_ENABLED        true
 
 COPY telegraf.conf.tpl /etc/telegraf/telegraf.conf.tpl
 COPY run.sh /run.sh
