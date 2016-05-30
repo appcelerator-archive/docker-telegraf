@@ -115,7 +115,7 @@
   ## URLs of kafka brokers
   brokers = ["{{ OUTPUT_KAFKA_BROKER_URL | default("localhost:9092") }}"]
   ## Kafka topic for producer messages
-  topics = ["{{ OUTPUT_KAFKA_TOPIC | default("telegraf") }}"]
+  topic = "{{ OUTPUT_KAFKA_TOPIC | default("telegraf") }}"
   ## Telegraf tag to use as a routing key
   ##  ie, if this tag exists, it's value will be used as the routing key
   routing_tag = "host"
@@ -281,7 +281,7 @@
 {% if INPUT_KAFKA_ENABLED == "true" %}
 [[inputs.kafka_consumer]]
   ## topic(s) to consume
-  topic = "{{ INPUT_KAFKA_TOPIC | default("telegraf") }}"
+  topics = [ "{{ INPUT_KAFKA_TOPIC | default("telegraf") }}" ]
   ## an array of Zookeeper connection strings
   zookeeper_peers = ["{{ INPUT_KAFKA_ZOOKEEPER_PEER | default("zookeeper:2181") }}"]
   ## the name of the consumer group
