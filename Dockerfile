@@ -1,4 +1,4 @@
-FROM appcelerator/alpine:3.3.2
+FROM appcelerator/amp:latest
 MAINTAINER Nicolas Degory <ndegory@axway.com>
 
 ENV TELEGRAF_VERSION 0.13.1
