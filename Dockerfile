@@ -14,7 +14,6 @@ RUN echo "http://nl.alpinelinux.org/alpine/edge/main" >> /etc/apk/repositories &
     make && \
     chmod +x $GOPATH/bin/* && \
     mv $GOPATH/bin/* /bin/ && \
-    strip /bin/telegraf && \
     apk del build-deps && \
     cd / && rm -rf /var/cache/apk/* $GOPATH && \
     mkdir -p /etc/telegraf
