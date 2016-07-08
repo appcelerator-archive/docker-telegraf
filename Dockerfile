@@ -39,14 +39,15 @@ ENV INPUT_DOCKER_ENABLED        true
 COPY telegraf.conf.tpl /etc/telegraf/telegraf.conf.tpl
 COPY run.sh /run.sh
 
-#ENV CONSUL=consul:8500
-# ContainerPilot scripts and configuration
-ENV CP_SERVICE_NAME=telegraf
-ENV CP_SERVICE_PORT=8094
-ENV CP_SERVICE_BIN=telegraf
-ENV CP_DEPENDENCIES='[{"name": "influxdb"}, {"name": "amp-log-agent", "onChange": "ignore"} ]'
+# amp-pilot scripts and configuration
+#ENV consul=consul:8500
+ENV SERVICE_NAME=telegraf
+ENV AMPPILOT_REGISTEREDPORT=8094
+ENV AMPPILOT_LAUNCH_CMD=/run.sh
+ENV DEPENDENCIES="influxdb, amp-log-agent"
+ENV AMPPILOT_AMPLOGAGENT_ONLYATSTARTUP=true
 
-CMD ["/start.sh"]
+ENTRYPOINT ["/run.sh"]
 
 LABEL axway_image=telegraf
 # will be updated whenever there's a new commit
