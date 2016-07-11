@@ -3,9 +3,7 @@ MAINTAINER Nicolas Degory <ndegory@axway.com>
 
 ENV TELEGRAF_VERSION 0.13.1
 
-RUN echo "http://nl.alpinelinux.org/alpine/edge/main" >> /etc/apk/repositories && \
-    echo "http://nl.alpinelinux.org/alpine/edge/community" >> /etc/apk/repositories && \
-    apk update && apk upgrade && \
+RUN apk update && apk upgrade && \
     apk --virtual build-deps add go>1.6 git gcc musl-dev make binutils && \
     export GOPATH=/go && \
     go get -v github.com/influxdata/telegraf && \
