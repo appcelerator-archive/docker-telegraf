@@ -38,7 +38,6 @@ COPY telegraf.conf.tpl /etc/telegraf/telegraf.conf.tpl
 COPY run.sh /run.sh
 
 # amp-pilot scripts and configuration
-#ENV consul=consul:8500
 ENV SERVICE_NAME=telegraf
 ENV AMPPILOT_REGISTEREDPORT=8094
 ENV AMPPILOT_LAUNCH_CMD=/run.sh

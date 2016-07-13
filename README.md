@@ -51,7 +51,7 @@ docker run -t -v /var/run/docker.sock:/var/run/docker.sock:ro -v /var/run/utmp:/
 - INPUT_KAFKA_TOPIC - Kafka topic on which to read, defaults to telegraf
 - INPUT_KAFKA_ZOOKEEPER_PEER - Zookeeper peers used by Kafka in input, defaults to zookeeper:2181
 - KAFKA_DATA_FORMAT - Kafka data format, defaults to influx
-- CONSUL - Consul URL for container pilot, example: consul:8500, disabled by default
+- CONSUL - Consul address for amp-pilot, example: consul:8500, disabled by default
 
 ## Tags
 
