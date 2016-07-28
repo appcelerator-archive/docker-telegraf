@@ -1,4 +1,4 @@
-FROM appcelerator/amp:latest
+FROM appcelerator/alpine:20160726
 MAINTAINER Nicolas Degory <ndegory@axway.com>
 
 ENV TELEGRAF_VERSION 0.13.1
@@ -23,6 +23,7 @@ ENV INTERVAL 10s
 ENV OUTPUT_INFLUXDB_ENABLED     true
 ENV OUTPUT_CLOUDWATCH_ENABLED   false
 ENV OUTPUT_KAFKA_ENABLED        false
+ENV OUTPUT_FILE_ENABLED         false
 ENV INPUT_KAFKA_ENABLED         false
 ENV INPUT_CPU_ENABLED           false
 ENV INPUT_DISK_ENABLED          false

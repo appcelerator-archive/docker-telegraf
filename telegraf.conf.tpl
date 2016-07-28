@@ -161,6 +161,24 @@
 {% else %}
 # Kafka output is disabled
 {% endif %}
+    
+# # Configuration for the file output
+{% if OUTPUT_FILE_ENABLED == "true" %}
+# # Send telegraf metrics to file(s)
+[[outputs.file]]
+#   ## Files to write to, "stdout" is a specially handled file.
+#   files = ["stdout", "/tmp/metrics.out"]
+   files = ["{{ OUTPUT_FILE_PATH | default("stdout") }}"]
+#
+#   ## Data format to output.
+#   ## Each data format has it's own unique set of configuration options, read
+#   ## more about them here:
+#   ## https://github.com/influxdata/telegraf/blob/master/docs/DATA_FORMATS_OUTPUT.md
+   data_format = "influx"
+#   data_format = "json"
+{% else %}
+# File output is disabled
+{% endif %}
 ###############################################################################
 #                            INPUT PLUGINS                                    #
 ###############################################################################

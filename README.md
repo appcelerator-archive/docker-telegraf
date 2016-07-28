@@ -29,6 +29,7 @@ docker run -t -v /var/run/docker.sock:/var/run/docker.sock:ro -v /var/run/utmp:/
 - OUTPUT_INFLUXDB_ENABLED - enable InfluxDB Output, defaults to true
 - OUTPUT_CLOUDWATCH_ENABLED - enable Amazon Cloudwatch Output, defaults to false
 - OUTPUT_KAFKA_ENABLED - enable Kafka Output, defaults to false
+- OUTPUT_FILE_ENABLED - enable File Output, defaults to false
 - INPUT_KAFKA_ENABLED - enable Kafka Input, defaults to false
 - INPUT_CPU_ENABLED - enable cpu metrics, defaults to false
 - INPUT_DISK_ENABLED - enable disk metrics, defaults to false
@@ -47,6 +48,7 @@ docker run -t -v /var/run/docker.sock:/var/run/docker.sock:ro -v /var/run/utmp:/
 - CLOUDWATCH_NAMESPACE - Namespace, defaults to InfluxData/Telegraf
 - OUTPUT_KAFKA_BROKER_URL - Kafka broker URL in output, defaults to localhost:9092
 - OUTPUT_KAFKA_TOPIC - Kafka topic on which to write, defaults to telegraf
+- OUTPUT_FILE_PATH - absolute path to the file, would better be mounted, defaults to stdout
 - INPUT_KAFKA_BROKER_URL - Kafka broker URL in input, defaults to localhost:9092
 - INPUT_KAFKA_TOPIC - Kafka topic on which to read, defaults to telegraf
 - INPUT_KAFKA_ZOOKEEPER_PEER - Zookeeper peers used by Kafka in input, defaults to zookeeper:2181

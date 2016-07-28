@@ -15,9 +15,10 @@ echo "System:          $INPUT_SYSTEM_ENABLED"
 echo "Docker:          $INPUT_DOCKER_ENABLED"
 
 echo "Configured outputs:"
-echo "InfluxDB:       $OUTPUT_INFLUXDB_ENABLED"
+echo "InfluxDB:       $OUTPUT_INFLUXDB_ENABLED ($INFLUXDB_URL)"
 echo "Cloudwatch:     $OUTPUT_CLOUDWATCH_ENABLED"
 echo "Kafka:          $OUTPUT_KAFKA_ENABLED"
+echo "File:           $OUTPUT_FILE_ENABLED ($OUTPUT_FILE_PATH)"
 
 if [[ -f /etc/telegraf/telegraf.conf.tpl ]] ; then
     echo "Generating /etc/telegraf/telegraf.conf from template..."
@@ -33,10 +34,9 @@ fi
 CMD="/bin/telegraf"
 CMDARGS="-config /etc/telegraf/telegraf.conf"
 export AMPPILOT_LAUNCH_CMD="$CMD $CMDARGS"
-if [[ -n "$CONSUL" && -n "$PILOT" ]]; then
+if [[ -n "$CONSUL" && -x "$PILOT" ]]; then
     echo "registering in Consul with $PILOT"
     exec "$PILOT"
 else
-    echo "not registering in Consul"
     exec "$CMD" $CMDARGS
 fi

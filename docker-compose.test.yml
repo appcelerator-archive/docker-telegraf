@@ -1,0 +1,29 @@
+version: '2'
+services:
+  consul:
+    extends:
+      file: docker-compose.yml
+      service: consul
+  pilot:
+    extends:
+      file: docker-compose.yml
+      service: pilot
+    depends_on:
+      - consul
+  telegraf:
+    extends:
+      file: docker-compose.yml
+      service: telegraf
+    environment:
+      INTERVAL: 3s
+      FLUSH_INTERVAL: 3s
+      FLUSH_JITTER: 0.2s
+    depends_on:
+      - consul
+      - pilot
+  sut:
+    extends:
+      file: docker-compose.yml
+      service: sut
+    depends_on:
+      - telegraf

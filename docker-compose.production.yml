@@ -1,0 +1,10 @@
+version: '2'
+services:
+  telegraf:
+    extends:
+      file: docker-compose.yml
+      service: telegraf
+    environment:
+      CONSUL: ""
+    entrypoint: "/bin/sh -c"
+    command: "true"
