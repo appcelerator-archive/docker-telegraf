@@ -65,5 +65,8 @@ if [[ $? -ne 0 ]]; then
   exit 1
 fi
 echo "[OK]"
+echo "cleaning up output file"
+> "$OUTPUT_FILE"
+rm "$OUTPUT_FILE"
 
 echo "all tests passed successfully"
