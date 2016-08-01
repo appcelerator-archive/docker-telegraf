@@ -10,16 +10,6 @@ services:
     command:
       [ "-bootstrap"]
 
-  sut:
-    image: appcelerator/sut
-    build:
-      context: ./sut
-      dockerfile: Dockerfile
-    volumes:
-      - /tmp/docker-compose-telegraf-output:/var/data
-    labels:
-      - "io.appcelerator.amp.build.mounts=/tmp/docker-compose-telegraf-output:/var/data"
-
   pilot:
     image: appcelerator/amp-pilot:latest
     volumes:
@@ -49,4 +39,14 @@ services:
       DEPENDENCIES: ""
     labels:
       - "ServiceUUId=system.telegraf"
-      - "io.appcelerator.amp.build.mounts=/var/run/docker.sock,/var/run/utmp,/bin/amppilot"
+      - "io.appcelerator.amp.build.mounts=/var/run/docker.sock,/var/run/utmp,/bin/amppilot,/tmp/docker-compose-telegraf-output:/var/data"
+
+  sut:
+    image: appcelerator/sut
+    build:
+      context: ./sut
+      dockerfile: Dockerfile
+    volumes:
+      - /tmp/docker-compose-telegraf-output:/var/data
+    labels:
+      - "io.appcelerator.amp.build.mounts=/tmp/docker-compose-telegraf-output:/var/data"
