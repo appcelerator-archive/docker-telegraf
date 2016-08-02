@@ -36,7 +36,6 @@ services:
       OUTPUT_FILE_ENABLED: "true"
       OUTPUT_FILE_PATH: "/var/data/output.dat"
       INPUT_DOCKER_ENABLED: "true"
-      DEPENDENCIES: ""
     labels:
       - "ServiceUUId=system.telegraf"
       - "io.appcelerator.amp.build.mounts=/var/run/docker.sock,/var/run/utmp,/bin/amppilot,/tmp/docker-compose-telegraf-output:/var/data"
