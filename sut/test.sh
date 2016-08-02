@@ -2,6 +2,13 @@
 
 DATA_DIR=/var/data
 OUTPUT_FILE=$DATA_DIR/output.dat
+
+_docker_logs(){
+  ct=$(docker ps | grep /telegraf | awk '{print $1}')
+  echo "logs from telegraf $ct:"
+  docker logs $ct
+}
+
 # cleanup
 if [[ -f "$OUTPUT_FILE" ]]; then
   echo "INFO - resetting the test file"
@@ -27,6 +34,7 @@ done
 if [[ "x$r" != "xtrue" ]]; then
   echo
   echo "telegraf didn't write anything"
+  _docker_logs
   exit 1
 fi
 echo "[OK]"
@@ -37,6 +45,7 @@ grep -q "^docker," "$OUTPUT_FILE"
 if [[ $? -ne 0 ]]; then
   echo
   echo "failed"
+  _docker_logs
   exit 1
 fi
 echo "[OK]"
@@ -46,6 +55,7 @@ grep -q "^docker_container_cpu," "$OUTPUT_FILE"
 if [[ $? -ne 0 ]]; then
   echo
   echo "failed"
+  _docker_logs
   exit 1
 fi
 echo "[OK]"
@@ -54,6 +64,7 @@ grep -q "^docker_container_mem," "$OUTPUT_FILE"
 if [[ $? -ne 0 ]]; then
   echo
   echo "failed"
+  _docker_logs
   exit 1
 fi
 echo "[OK]"
@@ -62,6 +73,7 @@ grep -q "^docker_container_net," "$OUTPUT_FILE"
 if [[ $? -ne 0 ]]; then
   echo
   echo "failed"
+  _docker_logs
   exit 1
 fi
 echo "[OK]"
